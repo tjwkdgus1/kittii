@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoShop - 고품질 인물 사진 무료 다운로드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        'primary-foreground': '#ffffff',
+                        background: '#ffffff',
+                        foreground: '#0f172a',
+                        muted: '#f8fafc',
+                        'muted-foreground': '#64748b',
+                        border: '#e2e8f0',
+                        accent: '#f1f5f9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hidden { display: none; }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            z-index: 1001;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: box-shadow 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: #0ea5e9;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0284c7;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+        .badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-new {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        .input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            width: 100%;
+        }
+        .input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <!-- Home Page -->
+    <div id="homePage">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-background border-b border-border">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-8">
+                        <a href="#" onclick="showHome()" class="text-2xl font-bold text-primary">PhotoShop</a>
+                        <nav class="hidden md:flex items-center gap-6">
+                            <a href="#" onclick="showHome()" class="text-foreground hover:text-primary transition-colors">홈</a>
+                            <a href="#" onclick="showShop()" class="text-foreground hover:text-primary transition-colors">상점</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="py-20 px-4">
+            <div class="container mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    고품질 인물 사진을
+                    <span class="text-primary"> 무료로</span>
+                </h1>
+                <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                    다양한 인물 사진을 무료로 다운로드하세요. 모든 이미지는 고해상도로 제공되며 상업적 용도로도 사용 가능합니다.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showShop()" class="btn btn-primary text-lg px-8">
+                        🛍️ 상점 둘러보기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 px-4 bg-muted">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">왜 저희를 선택해야 할까요?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            ⭐
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">고품질 이미지</h3>
+                        <p class="text-muted-foreground">모든 사진은 고해상도로 제공되며 전문적인 품질을 보장합니다.</p>
+                    </div>
+
+                    <div class="card p-6 text-center">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            👥
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">다양한 인물</h3>
+                        <p class="text-muted-foreground">다양한 연령대와 스타일의 인물 사진을 제공합니다.</p>
+                    </div>
+
+                    <div class="card p-6 text-center">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            🏆
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">무료 다운로드</h3>
+                        <p class="text-muted-foreground">모든 이미지를 무료로 다운로드하고 상업적으로도 사용하세요.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 px-4">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">지금 바로 시작하세요</h2>
+                <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                    수백 장의 고품질 인물 사진이 여러분을 기다리고 있습니다.
+                </p>
+                <button onclick="showShop()" class="btn btn-primary text-lg px-8">
+                    상점으로 이동
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-border py-8 px-4">
+            <div class="container mx-auto text-center">
+                <p class="text-muted-foreground">© 2024 PhotoShop. 모든 권리 보유.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Shop Page -->
+    <div id="shopPage" class="hidden">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-background border-b border-border">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-8">
+                        <a href="#" onclick="showHome()" class="text-2xl font-bold text-primary">PhotoShop</a>
+                        <nav class="hidden md:flex items-center gap-6">
+                            <a href="#" onclick="showHome()" class="text-foreground hover:text-primary transition-colors flex items-center gap-2">
+                                🏠 홈
+                            </a>
+                            <a href="#" onclick="showShop()" class="text-primary font-medium">상점</a>
+                        </nav>
+                    </div>
+
+                    <div class="flex-1 max-w-md mx-8">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                placeholder="상품을 검색하세요..."
+                                id="searchInput"
+                                class="input pl-10"
+                                onkeyup="filterProducts()"
+                            />
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">🔍</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <button onclick="showHome()" class="md:hidden btn btn-outline">
+                            🏠
+                        </button>
+                        <button class="btn btn-outline">👤</button>
+                        <button class="btn btn-outline relative">
+                            🛒
+                            <span class="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">전체 상품 (<span id="productCount">5</span>개)</h2>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Products will be inserted here by JavaScript -->
+            </div>
+
+            <div id="noResults" class="text-center py-12 hidden">
+                <p class="text-muted-foreground">검색 조건에 맞는 상품이 없습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal-overlay hidden" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="relative">
+                <img id="modalImage" src="/placeholder.svg" alt="" class="w-full h-auto max-h-[80vh] object-contain" />
+                <div class="absolute top-4 right-4 flex gap-2">
+                    <button onclick="downloadCurrentImage()" class="btn btn-outline bg-white/80">
+                        📥
+                    </button>
+                    <button onclick="closeModal()" class="btn btn-outline bg-white/80">
+                        ✕
+                    </button>
+                </div>
+                <div class="p-4 bg-background border-t">
+                    <h3 id="modalTitle" class="text-lg font-semibold mb-2"></h3>
+                    <button onclick="downloadCurrentImage()" class="btn btn-primary w-full">
+                        📥 다운로드
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="detailModal" class="modal-overlay hidden" onclick="closeDetailModal()">
+        <div class="modal-content max-w-4xl" onclick="event.stopPropagation()">
+            <div class="grid md:grid-cols-2 gap-6 p-6">
+                <div class="space-y-4">
+                    <img id="detailImage" src="/placeholder.svg" alt="" class="w-full h-auto rounded-lg" />
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h2 id="detailTitle" class="text-2xl font-bold mb-2"></h2>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="flex items-center gap-1">
+                                <span class="text-yellow-400">⭐</span>
+                                <span class="text-sm text-muted-foreground">5.0 (1개 리뷰)</span>
+                            </div>
+                            <span class="badge badge-new">NEW</span>
+                        </div>
+                        <div class="text-2xl font-bold text-primary mb-4">무료</div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold mb-2">상품 설명</h3>
+                        <p id="detailDescription" class="text-muted-foreground leading-relaxed"></p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold mb-2">카테고리</h3>
+                        <span class="badge badge-new">인물</span>
+                    </div>
+
+                    <div class="flex gap-2 pt-4">
+                        <button onclick="downloadDetailImage()" class="btn btn-primary flex-1">
+                            📥 다운로드
+                        </button>
+                        <button class="btn btn-outline">
+                            ❤️
+                        </button>
+                    </div>
+                    <button onclick="closeDetailModal()" class="btn btn-outline w-full mt-2">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                name: "이윤서",
+                price: 0,
+                image: "yoon-seo.jpg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "자연스러운 미소가 매력적인 이윤서의 프로필 사진입니다. 밝고 친근한 분위기를 연출하고 싶을 때 완벽한 선택입니다."
+            },
+            {
+                id: 2,
+                name: "최우진",
+                price: 0,
+                image: "woo-jin.jpg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "세련되고 모던한 느낌의 최우진 사진입니다. 비즈니스나 전문적인 용도에 적합한 고품질 이미지입니다."
+            },
+            {
+                id: 3,
+                name: "조희섭",
+                price: 0,
+                image: "hee-seop.jpg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "따뜻하고 친근한 인상의 조희섭 사진입니다. 다양한 프로젝트에 활용할 수 있는 범용성 높은 이미지입니다."
+            },
+            {
+                id: 4,
+                name: "로리",
+                price: 0,
+                image: "lori.jpg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "귀엽고 사랑스러운 로리의 사진입니다. 젊고 활기찬 분위기를 표현하고 싶을 때 이상적인 선택입니다."
+            },
+            {
+                id: 5,
+                name: "후쿠로기 노도카",
+                price: 0,
+                image: "nodoka.jpg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "우아하고 세련된 후쿠로기 노도카의 사진입니다. 고급스러운 분위기를 연출하고 싶을 때 완벽한 이미지입니다."
+            }
+        ];
+
+        let currentProduct = null;
+        let filteredProducts = [...products];
+
+        // Navigation functions
+        function showHome() {
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('shopPage').classList.add('hidden');
+        }
+
+        function showShop() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('shopPage').classList.remove('hidden');
+            renderProducts();
+        }
+
+        // Product rendering
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const noResults = document.getElementById('noResults');
+            const productCount = document.getElementById('productCount');
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                productCount.textContent = '0';
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            productCount.textContent = filteredProducts.length;
+
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="card group cursor-pointer">
+                    <div class="p-0">
+                        <div class="relative overflow-hidden rounded-t-lg">
+                            <img
+                                src="${product.image}"
+                                alt="${product.name}"
+                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            ${product.isNew ? '<span class="badge badge-new absolute top-2 left-2">NEW</span>' : ''}
+                            <button class="btn btn-outline absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/80">
+                                ❤️
+                            </button>
+                        </div>
+
+                        <div class="p-4 space-y-2">
+                            <h3 class="font-medium leading-tight">${product.name}</h3>
+
+                            <div class="flex items-center gap-1">
+                                <span class="text-yellow-400">⭐</span>
+                                <span class="text-sm text-muted-foreground">
+                                    ${product.rating} (${product.reviews})
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg font-bold">무료</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button
+                                    onclick="showProductDetail(${product.id})"
+                                    class="btn btn-outline flex-1 bg-transparent"
+                                >
+                                    자세히 보기
+                                </button>
+                                <button
+                                    onclick="openImageModal('${product.image}', '${product.name}')"
+                                    class="btn btn-primary flex-1"
+                                >
+                                    구매하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search and filter
+        function filterProducts() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            filteredProducts = products.filter(product =>
+                product.name.toLowerCase().includes(searchQuery)
+            );
+            renderProducts();
+        }
+
+        // Modal functions
+        function openImageModal(imageSrc, productName) {
+            currentProduct = { image: imageSrc, name: productName };
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalTitle').textContent = productName;
+            document.getElementById('imageModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            currentProduct = null;
+        }
+
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('detailImage').src = product.image;
+            document.getElementById('detailTitle').textContent = product.name;
+            document.getElementById('detailDescription').textContent = product.description;
+            currentProduct = product;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            currentProduct = null;
+        }
+
+        // Download functions
+        function downloadCurrentImage() {
+            if (!currentProduct) return;
+            downloadImage(currentProduct.image, currentProduct.name);
+        }
+
+        function downloadDetailImage() {
+            if (!currentProduct) return;
+            downloadImage(currentProduct.image, currentProduct.name);
+        }
+
+        function downloadImage(imageUrl, fileName) {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = `${fileName}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showHome();
+        });
+    </script>
+</body>
+</html>
