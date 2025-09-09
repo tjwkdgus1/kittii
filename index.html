@@ -328,7 +328,7 @@
                 id: 1,
                 name: "이윤서",
                 price: 0,
-                image: "yoon-seo.jpg",
+                image: "https://i.ibb.co/7tX92Ctt/Kakao-Talk-20250909-205015809-01.jpg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
@@ -339,7 +339,7 @@
                 id: 2,
                 name: "최우진",
                 price: 0,
-                image: "woo-jin.jpg",
+                image: "https://i.ibb.co/9kB7ZYvC/Kakao-Talk-20250909-205015809-02.jpg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
@@ -350,7 +350,7 @@
                 id: 3,
                 name: "조희섭",
                 price: 0,
-                image: "hee-seop.jpg",
+                image: "https://i.ibb.co/6719n4gn/Kakao-Talk-20250909-205015809-03.jpg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
@@ -361,7 +361,7 @@
                 id: 4,
                 name: "로리",
                 price: 0,
-                image: "lori.jpg",
+                image: "https://i.ibb.co/zhkCzXyv/Kakao-Talk-20250909-205015809-04.jpg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
@@ -372,7 +372,7 @@
                 id: 5,
                 name: "후쿠로기 노도카",
                 price: 0,
-                image: "nodoka.jpg",
+                image: "https://i.ibb.co/mrTZcFpt/Kakao-Talk-20250909-205015809.jpg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
@@ -500,6 +500,31 @@
         }
 
         // Download functions
+        async function downloadImage(imageUrl, fileName) {
+            try {
+                // Fetch the image as blob to handle cross-origin issues
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                
+                // Create object URL from blob
+                const url = window.URL.createObjectURL(blob);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${fileName}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up object URL
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('다운로드 중 오류가 발생했습니다:', error);
+                alert('다운로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        }
+
         function downloadCurrentImage() {
             if (!currentProduct) return;
             downloadImage(currentProduct.image, currentProduct.name);
@@ -508,15 +533,6 @@
         function downloadDetailImage() {
             if (!currentProduct) return;
             downloadImage(currentProduct.image, currentProduct.name);
-        }
-
-        function downloadImage(imageUrl, fileName) {
-            const link = document.createElement('a');
-            link.href = imageUrl;
-            link.download = `${fileName}.jpg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
 
         // Initialize
