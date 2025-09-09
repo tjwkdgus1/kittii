@@ -238,7 +238,7 @@
 
         <div class="container mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold">전체 상품 (<span id="productCount">5</span>개)</h2>
+                <h2 class="text-xl font-semibold">전체 상품 (<span id="productCount">12</span>개)</h2>
             </div>
 
             <!-- Product Grid -->
@@ -326,58 +326,147 @@
         const products = [
             {
                 id: 1,
-                name: "이윤서",
+                name: "무표정우진",
+                person: "최우진",
                 price: 0,
-                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%9D%B4%EC%9C%A4%EC%84%9C.jpg-8WAfg2tE9VHpsbiWlcCv46Op8sZ5rV.jpeg",
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%AC%B4%ED%91%9C%EC%A0%95%EC%9A%B0%EC%A7%84%28%EC%B5%9C%EC%9A%B0%EC%A7%84%29.jpg-jOPzq7smYHK20dhaKijK9jc4t2Lxhl.jpeg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
                 isNew: true,
-                description: "자연스러운 미소가 매력적인 이윤서의 프로필 사진입니다. 밝고 친근한 분위기를 연출하고 싶을 때 완벽한 선택입니다."
+                description: "무표정한 표정이 인상적인 최우진의 야외 사진입니다. 자연스럽고 진솔한 분위기를 연출하고 싶을 때 완벽한 선택입니다."
             },
             {
                 id: 2,
-                name: "최우진",
+                name: "꽃받침",
+                person: "서장현",
                 price: 0,
-                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%B5%9C%EC%9A%B0%EC%A7%84.jpg-3i3fcP662hBxcpjYEjDxFxFSfELdRg.jpeg",
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EA%BD%83%EB%B0%9B%EC%B9%A8%28%EC%84%9C%EC%9E%A5%ED%98%84%29.jpg-eNyh1hu39zVIM8gIFolfkqBTEg0Nhk.jpeg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
                 isNew: true,
-                description: "세련되고 모던한 느낌의 최우진 사진입니다. 비즈니스나 전문적인 용도에 적합한 고품질 이미지입니다."
+                description: "양손으로 얼굴을 받치고 있는 서장현의 귀여운 포즈 사진입니다. 친근하고 사랑스러운 분위기를 표현할 때 이상적입니다."
             },
             {
                 id: 3,
-                name: "조희섭",
+                name: "동물원",
+                person: "",
                 price: 0,
-                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%A1%B0%ED%9D%AC%EC%84%AD.jpg-t3npj2QbfMoi6hIIXLHjeR34Zy6u3i.jpeg",
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%8F%99%EB%AC%BC%EC%9B%90.jpg-5IKuH7hVkPhuhwcTcunwrmkhlh7Do0.jpeg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
                 isNew: true,
-                description: "따뜻하고 친근한 인상의 조희섭 사진입니다. 다양한 프로젝트에 활용할 수 있는 범용성 높은 이미지입니다."
+                description: "여러 사람이 함께 있는 실내 장면입니다. 일상적이고 자연스러운 분위기를 담은 그룹 사진으로 활용하기 좋습니다."
             },
             {
                 id: 4,
-                name: "로리",
+                name: "미쳐버린희섭",
+                person: "조희섭",
                 price: 0,
-                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%A1%9C%EB%A6%AC.jpg-VpHNxmmgN7CM9xmuklTm6wYpL2E1OT.jpeg",
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%AF%B8%EC%B3%90%EB%B2%84%EB%A6%B0%ED%9D%AC%EC%84%AD%28%EC%A1%B0%ED%9D%AC%EC%84%AD%29.jpg-QWGB1if0KrNX9K6CPdIjuuev5t2E2X.jpeg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
                 isNew: true,
-                description: "귀엽고 사랑스러운 로리의 사진입니다. 젊고 활기찬 분위기를 표현하고 싶을 때 이상적인 선택입니다."
+                description: "밝게 웃고 있는 조희섭의 에너지 넘치는 사진입니다. 활기차고 긍정적인 분위기를 연출하고 싶을 때 완벽한 이미지입니다."
             },
             {
                 id: 5,
-                name: "후쿠로기 노도카",
+                name: "로리",
+                person: "",
                 price: 0,
-                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%ED%9B%84%EC%BF%A0%EB%A1%9C%EA%B8%B0%20%EB%85%B8%EB%8F%84%EC%B9%B4.jpg-mNiS4s8bqiTkXyj0yO3LwhIgpnCgyi.jpeg",
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%A1%9C%EB%A6%AC.jpg-sEYfy36AlPg2oxEw0jYpIIzpzmtWIQ.jpeg",
                 rating: 5.0,
                 reviews: 1,
                 category: "인물",
                 isNew: true,
-                description: "우아하고 세련된 후쿠로기 노도카의 사진입니다. 고급스러운 분위기를 연출하고 싶을 때 완벽한 이미지입니다."
+                description: "귀엽고 사랑스러운 애니메이션 캐릭터 이미지입니다. 젊고 순수한 분위기를 표현하고 싶을 때 이상적인 선택입니다."
+            },
+            {
+                id: 6,
+                name: "수상한상훈",
+                person: "박상훈",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%88%98%EC%83%81%ED%95%9C%EC%83%81%ED%9B%88%28%EB%B0%95%EC%83%81%ED%9B%88%29.jpg-jOzSAw5xHIPHdPXbns6eFQib43HZGM.jpeg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "안경을 쓰고 핸드폰을 보며 웃고 있는 박상훈의 일상적인 모습입니다. 자연스럽고 친근한 분위기를 연출할 때 좋습니다."
+            },
+            {
+                id: 7,
+                name: "브이로그",
+                person: "박상훈",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%B8%8C%EC%9D%B4%EB%A1%9C%EA%B7%B8%28%EB%B0%95%EC%83%81%ED%9B%88%29.jpg-475Y0vEkKHZ4oyvu1Z6yiOEFcgO0Ul.jpeg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "모니터에 나타난 박상훈의 브이로그 장면입니다. 디지털 미디어나 온라인 콘텐츠 관련 프로젝트에 적합한 이미지입니다."
+            },
+            {
+                id: 8,
+                name: "스윗현식",
+                person: "민현식",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%8A%A4%EC%9C%97%ED%98%84%EC%8B%9D%28%EB%AF%BC%ED%98%84%EC%8B%9D%29-MBpiuxndrLa4g4UvV16NeH7Ose2zXX.png",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "V사인을 하며 밝게 웃고 있는 민현식의 스위트한 사진입니다. 긍정적이고 활기찬 분위기를 표현하고 싶을 때 완벽합니다."
+            },
+            {
+                id: 9,
+                name: "놀란우진",
+                person: "최우진",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%86%80%EB%9E%80%EC%9A%B0%EC%A7%84%28%EC%B5%9C%EC%9A%B0%EC%A7%84%29.jpg-wtGT1kKBYHpIeYj4hIyKgOdj6kyMe0.jpeg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "놀란 표정의 최우진 사진입니다. 따뜻한 조명 아래에서 촬영된 감정이 풍부한 이미지로 다양한 용도로 활용 가능합니다."
+            },
+            {
+                id: 10,
+                name: "상훈머쓱",
+                person: "박상훈",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%83%81%ED%9B%88%EB%A8%B8%EC%93%B1%28%EB%B0%95%EC%83%81%ED%9B%88%29.jpg-SW3jVdvpaBPu6Yg6VfQvOC2G2p0PHP.jpeg",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "안경을 쓰고 머쓱한 표정을 짓고 있는 박상훈의 셀카입니다. 자연스럽고 솔직한 감정을 담은 일상적인 사진입니다."
+            },
+            {
+                id: 11,
+                name: "식사",
+                person: "야마다 료",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%8B%9D%EC%82%AC%28%EC%95%BC%EB%A7%88%EB%8B%A4%20%EB%A3%8C%29-gQ5XjpZBUTE82EViEaA34IMd8dw0yp.png",
+                rating: 5.0,
+                reviews: 1,
+                category: "인물",
+                isNew: true,
+                description: "파란 머리의 애니메이션 캐릭터가 양손으로 얼굴을 받치고 있는 귀여운 모습입니다. 부끄러워하는 표정이 매력적인 이미지입니다."
+            },
+            {
+                id: 12,
+                name: "얼싸",
+                person: "정태서",
+                price: 0,
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%8B%9D%EC%82%AC%28%EC%95%BC%EB%A7%88%EB%8B%A4%20%EB%A3%8C%29-gQ5XjpZBUTE82EViEaA34IMd8dw0yp.png", // 임시로 같은 이미지 사용
+                rating: 5.0,
+                reviews: 6974,
+                category: "인물",
+                isNew: false,
+                description: "정태서의 인기 있는 사진입니다. 많은 사용자들이 선택한 베스트셀러 이미지로 다양한 용도로 활용 가능합니다."
             }
         ];
 
@@ -465,7 +554,8 @@
         function filterProducts() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
             filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(searchQuery)
+                product.name.toLowerCase().includes(searchQuery) ||
+                (product.person && product.person.toLowerCase().includes(searchQuery))
             );
             renderProducts();
         }
