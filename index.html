@@ -288,7 +288,7 @@
                         <div class="flex items-center gap-2 mb-4">
                             <div class="flex items-center gap-1">
                                 <span class="text-yellow-400">⭐</span>
-                                <span class="text-sm text-muted-foreground">5.0 (1개 리뷰)</span>
+                                <span class="text-sm text-muted-foreground" id="detailRating">5.0 (1개 리뷰)</span>
                             </div>
                             <span class="badge badge-new">NEW</span>
                         </div>
@@ -313,6 +313,51 @@
                             ❤️
                         </button>
                     </div>
+
+                    <!-- 리뷰 섹션 추가 -->
+                    <div class="border-t pt-4 mt-4">
+                        <h3 class="font-semibold mb-3">리뷰 (<span id="reviewCount">0</span>개)</h3>
+                        
+                        <!-- 리뷰 작성 폼 -->
+                        <div class="space-y-3 mb-4">
+                            <div class="flex gap-2">
+                                <input
+                                    type="text"
+                                    id="reviewerName"
+                                    placeholder="닉네임을 입력하세요"
+                                    class="input flex-1"
+                                    maxlength="20"
+                                />
+                                <div class="flex items-center gap-1">
+                                    <span class="text-sm text-muted-foreground">평점:</span>
+                                    <select id="reviewRating" class="input w-16">
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                    <span class="text-yellow-400">⭐</span>
+                                </div>
+                            </div>
+                            <textarea
+                                id="reviewText"
+                                placeholder="리뷰를 작성해주세요..."
+                                class="input resize-none"
+                                rows="3"
+                                maxlength="200"
+                            ></textarea>
+                            <button onclick="submitReview()" class="btn btn-primary">
+                                리뷰 작성
+                            </button>
+                        </div>
+
+                        <!-- 리뷰 목록 -->
+                        <div id="reviewsList" class="space-y-3 max-h-60 overflow-y-auto">
+                            <!-- 리뷰들이 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+
                     <button onclick="closeDetailModal()" class="btn btn-outline w-full mt-2">
                         닫기
                     </button>
@@ -605,6 +650,99 @@
         let currentProduct = null;
         let filteredProducts = [...products];
 
+        function getReviews(productId) {
+            const reviews = localStorage.getItem(`reviews_${productId}`);
+            return reviews ? JSON.parse(reviews) : [];
+        }
+
+        function saveReviews(productId, reviews) {
+            localStorage.setItem(`reviews_${productId}`, JSON.stringify(reviews));
+        }
+
+        function calculateAverageRating(reviews) {
+            if (reviews.length === 0) return 5.0;
+            const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+            return (sum / reviews.length).toFixed(1);
+        }
+
+        function submitReview() {
+            if (!currentProduct) return;
+
+            const name = document.getElementById('reviewerName').value.trim();
+            const rating = parseInt(document.getElementById('reviewRating').value);
+            const text = document.getElementById('reviewText').value.trim();
+
+            if (!name) {
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+
+            if (!text) {
+                alert('리뷰 내용을 입력해주세요.');
+                return;
+            }
+
+            const reviews = getReviews(currentProduct.id);
+            const newReview = {
+                id: Date.now(),
+                name: name,
+                rating: rating,
+                text: text,
+                date: new Date().toLocaleDateString('ko-KR')
+            };
+
+            reviews.unshift(newReview); // 최신 리뷰를 맨 위에 추가
+            saveReviews(currentProduct.id, reviews);
+
+            // 폼 초기화
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewText').value = '';
+            document.getElementById('reviewRating').value = '5';
+
+            // 리뷰 목록 업데이트
+            displayReviews(currentProduct.id);
+            updateProductRating(currentProduct.id);
+
+            alert('리뷰가 성공적으로 등록되었습니다!');
+        }
+
+        function displayReviews(productId) {
+            const reviews = getReviews(productId);
+            const reviewsList = document.getElementById('reviewsList');
+            const reviewCount = document.getElementById('reviewCount');
+
+            reviewCount.textContent = reviews.length;
+
+            if (reviews.length === 0) {
+                reviewsList.innerHTML = '<p class="text-muted-foreground text-sm">아직 리뷰가 없습니다. 첫 번째 리뷰를 작성해보세요!</p>';
+                return;
+            }
+
+            reviewsList.innerHTML = reviews.map(review => `
+                <div class="border border-border rounded-lg p-3 bg-muted/30">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium text-sm">${review.name}</span>
+                            <div class="flex items-center gap-1">
+                                <span class="text-yellow-400">⭐</span>
+                                <span class="text-sm">${review.rating}</span>
+                            </div>
+                        </div>
+                        <span class="text-xs text-muted-foreground">${review.date}</span>
+                    </div>
+                    <p class="text-sm leading-relaxed">${review.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function updateProductRating(productId) {
+            const reviews = getReviews(productId);
+            const avgRating = calculateAverageRating(reviews);
+            const detailRating = document.getElementById('detailRating');
+            
+            detailRating.textContent = `${avgRating} (${reviews.length}개 리뷰)`;
+        }
+
         // Navigation functions
         function showHome() {
             document.getElementById('homePage').classList.remove('hidden');
@@ -633,7 +771,12 @@
             noResults.classList.add('hidden');
             productCount.textContent = filteredProducts.length;
 
-            grid.innerHTML = filteredProducts.map(product => `
+            grid.innerHTML = filteredProducts.map(product => {
+                const reviews = getReviews(product.id);
+                const avgRating = calculateAverageRating(reviews);
+                const reviewCount = reviews.length;
+
+                return `
                 <div class="card group cursor-pointer">
                     <div class="p-0">
                         <div class="relative overflow-hidden rounded-t-lg">
@@ -654,7 +797,7 @@
                             <div class="flex items-center gap-1">
                                 <span class="text-yellow-400">⭐</span>
                                 <span class="text-sm text-muted-foreground">
-                                    ${product.rating} (${product.reviews})
+                                    ${avgRating} (${reviewCount})
                                 </span>
                             </div>
 
@@ -679,7 +822,8 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // Search and filter
@@ -713,6 +857,10 @@
             document.getElementById('detailTitle').textContent = product.name;
             document.getElementById('detailDescription').textContent = product.description;
             currentProduct = product;
+            
+            displayReviews(productId);
+            updateProductRating(productId);
+            
             document.getElementById('detailModal').classList.remove('hidden');
         }
 
