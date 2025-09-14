@@ -7,23 +7,24 @@ const path = require("path");
 const app = express();
 app.use(cors());
 
-// 클라이언트 폴더 위치 지정
+// 클라이언트 폴더 정적 파일 서빙
 app.use(express.static(path.join(__dirname, "../client")));
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET","POST"] }
+  cors: { origin: "*" }
 });
 
-// 간단한 메모리 메시지 저장
+// 메모리 메시지 저장
 let messages = [];
 
 io.on("connection", (socket) => {
   console.log("✅ connected:", socket.id);
 
-  // 새로 연결된 클라이언트에 채팅 기록 전달
+  // 새 연결 클라이언트에게 채팅 기록 전달
   socket.emit("chat history", messages);
 
+  // 메시지 수신
   socket.on("chat message", (msg) => {
     const sanitized = {
       name: String(msg.name).slice(0,50),
