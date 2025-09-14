@@ -5,30 +5,33 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-// Allow CORS so clients hosted on GitHub Pages (or other domains) can connect
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+
+// 클라이언트 폴더 위치 지정
+app.use(express.static(path.join(__dirname, "../client")));
 
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET","POST"] }
 });
 
-// simple in-memory history (keeps only recent messages)
+// 간단한 메모리 메시지 저장
 let messages = [];
 
 io.on("connection", (socket) => {
   console.log("✅ connected:", socket.id);
 
-  // send chat history to newly connected client
+  // 새로 연결된 클라이언트에 채팅 기록 전달
   socket.emit("chat history", messages);
 
-  // receive message from client
   socket.on("chat message", (msg) => {
-    const text = String(msg).slice(0, 1000); // simple sanitization/limit
-    messages.push(text);
+    const sanitized = {
+      name: String(msg.name).slice(0,50),
+      message: String(msg.message).slice(0,1000)
+    };
+    messages.push(sanitized);
     if (messages.length > 500) messages.shift();
-    io.emit("chat message", text);
+    io.emit("chat message", sanitized);
   });
 
   socket.on("disconnect", () => {
