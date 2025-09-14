@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 // IMPORTANT: Replace 'YOUR_GITHUB_PAGES_URL' with your actual GitHub Pages URL
 // e.g., 'https://yourusername.github.io'
-const clientOrigin = 'https://YOUR_GITHUB_PAGES_URL'; 
+const clientOrigin = 'https://kittii.xyz/forum.html'; 
 
 const io = new Server(server, {
   cors: {
