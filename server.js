@@ -1,24 +1,40 @@
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
+// Allow CORS so clients hosted on GitHub Pages (or other domains) can connect
+app.use(cors());
+app.use(express.static(path.join(__dirname, "public")));
+
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: { origin: "*", methods: ["GET","POST"] }
+});
 
-app.use(express.static('client')); // client 폴더 전체 서빙
+// simple in-memory history (keeps only recent messages)
+let messages = [];
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
+io.on("connection", (socket) => {
+  console.log("✅ connected:", socket.id);
 
-  socket.on('chat message', ({name, message}) => {
-    io.emit('chat message', {name, message}); // 모든 클라이언트에 브로드캐스트
+  // send chat history to newly connected client
+  socket.emit("chat history", messages);
+
+  // receive message from client
+  socket.on("chat message", (msg) => {
+    const text = String(msg).slice(0, 1000); // simple sanitization/limit
+    messages.push(text);
+    if (messages.length > 500) messages.shift();
+    io.emit("chat message", text);
   });
 
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
+  socket.on("disconnect", () => {
+    console.log("⛔ disconnected:", socket.id);
   });
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
