@@ -1,17 +1,12 @@
 {
-  "name": "realtime-chat-server",
+  "name": "my-chat-app",
   "version": "1.0.0",
-  "description": "A simple chat server for a web forum",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server/server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.7.5",
-    "cors": "^2.8.5"
-  },
-  "engines": {
-    "node": ">=18.x"
+    "socket.io": "^4.8.1"
   }
 }
