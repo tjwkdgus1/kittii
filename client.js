@@ -3,7 +3,7 @@
 const SERVER_URL = "https://chat-app-server-a447.onrender.com"; // <<<<-- REPLACE THIS with your Render URL
 
 // If client is hosted on a different origin (GitHub Pages), specify the server URL
-const socket = SERVER_URL === "https://YOUR_RENDER_URL_HERE" ? 
+const socket = SERVER_URL === "https://chat-app-server-a447.onrender.com" ? 
   io() : io(SERVER_URL, { transports: ['websocket', 'polling'] });
 
 const form = document.getElementById("form");
