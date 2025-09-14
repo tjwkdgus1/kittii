@@ -1,7 +1,6 @@
 // IMPORTANT: set SERVER_URL to your Render server URL (include https://)
 // If you're hosting the client on the same origin as the server, you can use `io()` with no args.
-// 여기를 렌더(Render)에 배포한 서버의 URL로 수정해야 합니다.
-const SERVER_URL = "https://chat-app-server-a447.onrender.com"; 
+const SERVER_URL = "https://chat-app-server-a447.onrender.com"; // <<<<-- REPLACE THIS with your Render URL
 
 // If client is hosted on a different origin (GitHub Pages), specify the server URL
 const socket = SERVER_URL === "https://YOUR_RENDER_URL_HERE" ? 
