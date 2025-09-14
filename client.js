@@ -1,29 +1,35 @@
-const SERVER_URL = "https://chat-app-server-a447.onrender.com";
-const socket = io(SERVER_URL, { transports: ['websocket', 'polling'] });
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    lucide.createIcons();
 
-const form = document.getElementById("form");
-const nameInput = document.getElementById("name-input");
-const input = document.getElementById("input");
-const messages = document.getElementById("messages");
+    const socket = io("https://chat-app-server-a447.onrender.com"); // Render 서버 URL
 
-socket.on("connect", () => console.log("socket connected:", socket.id));
-socket.on("connect_error", (err) => console.error("connect_error:", err));
+    const form = document.getElementById('form');
+    const nameInput = document.getElementById('name-input');
+    const messageInput = document.getElementById('input');
+    const messages = document.getElementById('messages');
 
-socket.on("chat history", (history) => history.forEach(addMessage));
-socket.on("chat message", (msg) => addMessage(msg));
+    // 초기 채팅 기록
+    socket.on("chat history", (history) => {
+        messages.innerHTML = "";
+        history.forEach(msg => addMessage(msg));
+    });
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const val = input.value.trim();
-  const name = nameInput.value.trim();
-  if (!val || !name) return;
-  socket.emit("chat message", { name, message: val });
-  input.value = "";
-});
+    // 새로운 메시지 수신
+    socket.on("chat message", (msg) => addMessage(msg));
 
-function addMessage(msg) {
-  const li = document.createElement("li");
-  li.innerHTML = `<span class="text-cyan-400 font-medium">${msg.name}:</span> <span class="text-white">${msg.message}</span>`;
-  messages.appendChild(li);
-  messages.scrollTop = messages.scrollHeight;
-}
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (nameInput.value && messageInput.value) {
+            socket.emit("chat message", { name: nameInput.value, message: messageInput.value });
+            messageInput.value = '';
+        }
+    });
+
+    function addMessage(msg) {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="text-cyan-400 font-medium">${msg.name}:</span> <span class="text-white">${msg.message}</span>`;
+        messages.appendChild(li);
+        messages.scrollTop = messages.scrollHeight;
+    }
+</script>
