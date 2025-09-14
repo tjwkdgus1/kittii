@@ -1,44 +1,29 @@
-// IMPORTANT: set SERVER_URL to your Render server URL (include https://)
-// If you're hosting the client on the same origin as the server, you can use `io()` with no args.
-const SERVER_URL = "https://chat-app-server-a447.onrender.com"; // <<<<-- REPLACE THIS with your Render URL
-
-// If client is hosted on a different origin (GitHub Pages), specify the server URL
-const socket = SERVER_URL === "https://YOUR_RENDER_URL_HERE" ? 
-  io() : io(SERVER_URL, { transports: ['websocket', 'polling'] });
+const SERVER_URL = "https://chat-app-server-a447.onrender.com";
+const socket = io(SERVER_URL, { transports: ['websocket', 'polling'] });
 
 const form = document.getElementById("form");
+const nameInput = document.getElementById("name-input");
 const input = document.getElementById("input");
 const messages = document.getElementById("messages");
 
-socket.addEventListener("connect", () => {
-  console.log("socket connected:", socket.id);
-});
+socket.on("connect", () => console.log("socket connected:", socket.id));
+socket.on("connect_error", (err) => console.error("connect_error:", err));
 
-socket.addEventListener("connect_error", (err) => {
-  console.error("connect_error:", err);
-});
-
-// receive history
-socket.on("chat history", (history) => {
-  history.forEach(addMessage);
-});
-
-// receive new message
-socket.on("chat message", (msg) => {
-  addMessage(msg);
-});
+socket.on("chat history", (history) => history.forEach(addMessage));
+socket.on("chat message", (msg) => addMessage(msg));
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const val = input.value.trim();
-  if (!val) return;
-  socket.emit("chat message", val);
+  const name = nameInput.value.trim();
+  if (!val || !name) return;
+  socket.emit("chat message", { name, message: val });
   input.value = "";
 });
 
 function addMessage(msg) {
   const li = document.createElement("li");
-  li.textContent = msg;
+  li.innerHTML = `<span class="text-cyan-400 font-medium">${msg.name}:</span> <span class="text-white">${msg.message}</span>`;
   messages.appendChild(li);
   messages.scrollTop = messages.scrollHeight;
 }
